@@ -1,9 +1,17 @@
 package Counter;
 class Counter {
-   private static int count = 0;
+    int count = 0;
 
     void increment() {
         count++; // Not thread-safe
-        System.out.println("Shared count is" + count);
     }
+}
+public class StopCounter { 
+   public static void main(String [] args) throws InterruptedException { 
+       Counter counter = new Counter(); 
+       counter.start(); 
+
+       Thread.sleep(500); 
+       counter.stop(); 
+   }
 }
