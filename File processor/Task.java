@@ -1,8 +1,15 @@
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
+
 class Task implements Runnable {
     private int id;
+    private AtomicInteger processedCount;
+    private ConcurrentLinkedQueue<String> processedFiles;
 
-    public Task(int id) {
+    public Task(int id, AtomicInteger processedCount, ConcurrentLinkedQueue<String> processedFiles) {
         this.id = id;
+        this.processedCount = processedCount;
+        this.processedFiles = processedFiles;
     }
 
     @Override
@@ -13,6 +20,10 @@ class Task implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Task " + id + " completed");
+
+        String fileName = "file_" + id + ".txt";
+        processedFiles.add(fileName);              
+        int count = processedCount.incrementAndGet();
+        System.out.println("Task " + id + " completed (" + count + " files processed so far)");
     }
 }
